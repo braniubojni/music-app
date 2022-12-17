@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    # music-rabbit:
+    #     restart: always
+    #     build:
+    #         context: rabbitmq
+    #         dockerfile: Dockerfile
+    #     container_name: 'bizzity-rabbit'
+    #     ports:
+    #         - '15672:15672'
+    #         - '5672:5672'
+    pg-music-app:
+        image: postgres
+        # restart: always
+        ports:
+            - 54322:5432
+        environment:
+            POSTGRES_USER: pg-admin
+            POSTGRES_PASSWORD: pg-admin-password-987
+            POSTGRES_DB: music-app-db
