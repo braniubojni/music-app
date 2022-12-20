@@ -18,7 +18,6 @@ import { TrackModule } from './track/track.module';
       database: process.env.PG_DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      logger: 'simple-console',
     }),
   ],
   controllers: [],

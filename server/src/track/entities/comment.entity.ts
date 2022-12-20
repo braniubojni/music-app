@@ -1,9 +1,9 @@
-import { Column, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Track } from './track.entity';
-
+@Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   username: string;
@@ -11,6 +11,6 @@ export class Comment {
   @Column()
   text: string;
 
-  @ManyToMany(() => Track, (track) => track.comments)
-  tracks: Track[];
+  @ManyToOne(() => Track, (track) => track.comments)
+  track: Track;
 }
