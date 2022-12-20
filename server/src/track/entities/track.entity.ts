@@ -1,9 +1,10 @@
-import { Column, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Comment } from './comment.entity';
 
+@Entity()
 export class Track {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -17,14 +18,12 @@ export class Track {
   @Column()
   listens: number;
 
-  @Column()
+  @Column({ nullable: true })
   picture: string;
 
-  @Column()
+  @Column({ nullable: true })
   audio: string;
 
-  // @Column({ array: true })
-  @JoinTable()
-  @ManyToMany(() => Comment, (comment) => comment.tracks)
-  comments: string[];
+  @OneToMany(() => Comment, (comment) => comment.track)
+  comments: Comment[];
 }
