@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Comment } from './track/entities/comment.entity';
-import { Track } from './track/entities/track.entity';
 import { TrackModule } from './track/track.module';
 
 @Module({
