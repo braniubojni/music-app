@@ -3,16 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
-  StreamableFile,
+  Put,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { SERVER_ERR } from 'src/common/constants';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { TrackService } from './track.service';
@@ -34,30 +34,57 @@ export class TrackController {
     ]),
   )
   create(@UploadedFiles() files: IFiles, @Body() dto: CreateTrackDto) {
-    const { picture, audio } = files;
-    return this.trackService.create(dto, picture[0], audio[0]);
+    try {
+      console.log('WORKED');
+      const { picture, audio } = files;
+      return this.trackService.create(dto, picture[0], audio[0]);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get()
   getAll() {
-    return this.trackService.getAll();
+    try {
+      return this.trackService.getAll();
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')
   getOne(@Param('id') id: string) {
-    return this.trackService.getOne(id);
+    try {
+      return this.trackService.getOne(id);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.trackService.delete(id);
+    try {
+      return this.trackService.delete(id);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Post('comment')
   async addComment(@Body() dto: CreateCommentDto) {
-    return this.trackService.addComment(dto);
+    try {
+      return this.trackService.addComment(dto);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  @Post('listen/:id')
-  async listen(@Param('id') id: string) {}
+  @Put('listen/:id')
+  async listen(@Param('id') id: string) {
+    try {
+      return this.trackService.listen(id);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

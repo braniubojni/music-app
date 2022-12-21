@@ -72,17 +72,18 @@ export class TrackService {
   }
 
   async getOne(id: string): Promise<Track> {
-    console.log(id, 'id');
     const track = await this.trackRepository
       .createQueryBuilder('track')
-      .innerJoinAndSelect(
+      .where('track.id = :id', { id })
+      .leftJoinAndSelect(
         'track.comments',
         'comment',
         'comment.trackId = :trackId',
-        { trackId: id },
+        {
+          trackId: id,
+        },
       )
       .getOne();
-    console.log(track, 'track');
     return track;
   }
 
@@ -105,5 +106,11 @@ export class TrackService {
     });
 
     return comment;
+  }
+
+  async listen(id) {
+    const track = await this.findTrackById(id);
+    track.listens += 1;
+    await this.trackRepository.save(track);
   }
 }
