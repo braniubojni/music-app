@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,12 +16,8 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SERVER_ERR } from 'src/common/constants';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
+import { IFiles, IGetAllQuery } from './track.interface';
 import { TrackService } from './track.service';
-
-interface IFiles {
-  picture: Express.Multer.File;
-  audio: Express.Multer.File;
-}
 
 @Controller('track')
 export class TrackController {
@@ -44,9 +41,9 @@ export class TrackController {
   }
 
   @Get()
-  getAll() {
+  getAll(@Query() { count, offset }: IGetAllQuery) {
     try {
-      return this.trackService.getAll();
+      return this.trackService.getAll(+count, +offset);
     } catch (e) {
       return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
