@@ -74,6 +74,14 @@ export class TrackService {
     return tracks;
   }
 
+  async search(trackName: string): Promise<Track[]> {
+    const tracks = await this.trackRepository
+      .createQueryBuilder('track')
+      .where('track.name ILIKE :name', { name: `%${trackName}%` })
+      .getMany();
+    return tracks;
+  }
+
   async getOne(id: string): Promise<Track> {
     const track = await this.trackRepository
       .createQueryBuilder('track')

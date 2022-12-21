@@ -12,12 +12,9 @@ export enum FileType {
 export class FileService {
   async create(type: FileType, file: Express.Multer.File) {
     try {
-			console.log('WORKED');
       const ext = path.extname(file.originalname);
       const fileName = uuid() + ext;
-			console.log('qwe')
       const filePath = path.resolve(__dirname, '..', 'static', type);
-			console.log(123)
 
       const pathExists = await fsp.stat(filePath).catch(() => null);
       if (!pathExists) {

@@ -16,7 +16,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SERVER_ERR } from 'src/common/constants';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
-import { IFiles, IGetAllQuery } from './track.interface';
+import { IFiles, IGetAllQuery, IQuery } from './track.interface';
 import { TrackService } from './track.service';
 
 @Controller('track')
@@ -32,7 +32,6 @@ export class TrackController {
   )
   create(@UploadedFiles() files: IFiles, @Body() dto: CreateTrackDto) {
     try {
-      console.log('WORKED');
       const { picture, audio } = files;
       return this.trackService.create(dto, picture[0], audio[0]);
     } catch (e) {
@@ -44,6 +43,15 @@ export class TrackController {
   getAll(@Query() { count, offset }: IGetAllQuery) {
     try {
       return this.trackService.getAll(+count, +offset);
+    } catch (e) {
+      return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get('search')
+  search(@Query() { query }: IQuery) {
+    try {
+      return this.trackService.search(query);
     } catch (e) {
       return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -7,3 +7,7 @@ export interface IGetAllQuery {
   offset?: string;
   count?: string;
 }
+
+export interface IQuery {
+  query: string;
+}
