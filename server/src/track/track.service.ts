@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FileService, FileType } from 'src/file/file.service';
 import { Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -17,6 +18,7 @@ export class TrackService {
     private readonly trackRepository: Repository<Track>,
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    private readonly fileService: FileService,
   ) {}
 
   private async findTrackById(id: string) {
@@ -27,7 +29,11 @@ export class TrackService {
     });
   }
 
-  async create(dto: CreateTrackDto): Promise<Track> {
+  async create(
+    dto: CreateTrackDto,
+    picture: Express.Multer.File,
+    audio: Express.Multer.File,
+  ): Promise<Track> {
     const exists = await this.trackRepository.findOne({
       where: {
         artist: dto.artist,
@@ -39,8 +45,24 @@ export class TrackService {
         `Artist ${dto.artist} and track ${dto.name} already exists`,
       );
     }
+    const [audioPath, picPath] = (
+      await Promise.allSettled([
+        this.fileService.create(FileType.AUDIO, audio),
+        this.fileService.create(FileType.IMAGE, picture),
+      ])
+    ).map((promise) => {
+      if (promise.status === 'rejected') {
+        throw promise.reason;
+      }
+      return promise.value;
+    });
 
-    const track = await this.trackRepository.save({ ...dto, listens: 0 });
+    const track = await this.trackRepository.save({
+      ...dto,
+      listens: 0,
+      audio: audioPath,
+      picture: picPath,
+    });
     return track;
   }
 

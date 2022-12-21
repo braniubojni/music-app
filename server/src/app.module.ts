@@ -2,9 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TrackModule } from './track/track.module';
+import { FileModule } from './file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'static'),
+    }),
     ConfigModule.forRoot({
       envFilePath: `.env${'.' + (process.env.NODE_ENV || 'development')}`,
     }),
@@ -19,6 +25,7 @@ import { TrackModule } from './track/track.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    FileModule,
   ],
   controllers: [],
   providers: [],
