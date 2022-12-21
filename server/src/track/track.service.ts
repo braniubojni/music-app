@@ -50,7 +50,17 @@ export class TrackService {
   }
 
   async getOne(id: string): Promise<Track> {
-    const track = await this.findTrackById(id);
+    console.log(id, 'id');
+    const track = await this.trackRepository
+      .createQueryBuilder('track')
+      .innerJoinAndSelect(
+        'track.comments',
+        'comment',
+        'comment.trackId = :trackId',
+        { trackId: id },
+      )
+      .getOne();
+    console.log(track, 'track');
     return track;
   }
 
