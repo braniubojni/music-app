@@ -1,11 +1,9 @@
 import { Delete, Pause, PlayArrow } from '@mui/icons-material';
 import {
-  Avatar,
-  IconButton,
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemText,
+	Avatar,
+	IconButton,
+	ListItem,
+	ListItemAvatar, ListItemText
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';

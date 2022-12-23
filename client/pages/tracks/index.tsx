@@ -47,7 +47,7 @@ const Index = () => {
           <Box p={2}>
             <Grid container justifyContent={'space-between'}>
               <Typography variant="h3">List of tracks</Typography>
-              <Button onClick={() => router.push(TRACK_CREATE)}>Upload</Button>
+              <Button variant="outlined" onClick={() => router.push(TRACK_CREATE)}>Upload</Button>
             </Grid>
           </Box>
           <TrackList tracks={tracks} />
