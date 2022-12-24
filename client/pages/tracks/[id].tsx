@@ -35,11 +35,10 @@ const TrackPage = () => {
           component={'img'}
           border={'1px solid black'}
           src={track.picture}
-        ></Box>
+        />
         <Box marginLeft={'2%'}>
           <Box component={'h1'}>Track name - {track.name}</Box>
           <Box component={'h1'}>Artist - {track.artist}</Box>
-          <Box component={'h1'}>Listens - {track.listens}</Box>
         </Box>
       </Grid>
 
