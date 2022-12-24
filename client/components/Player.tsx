@@ -12,7 +12,7 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useActions } from '../hooks/useAction';
 
 import { useTypedSelecors } from '../hooks/useTypedSelector';
@@ -44,28 +44,37 @@ const Player = () => {
     }
   }, []);
 
-  const { pauseTrack, playTrack } = useActions();
+  const {
+    pauseTrack,
+    playTrack,
+    setActiveTrack,
+    setCurrentTime,
+    setDuration,
+    setVolume,
+  } = useActions();
   const play = () => {
-    console.log(pause, 'pause')
     if (pause) {
-      pauseTrack();
+      playTrack();
       audio.play();
     } else {
-      playTrack();
+      pauseTrack();
       audio.pause();
     }
+  };
+  const volumeChange = (value: number) => {
+    setVolume(value);
   };
   function formatDuration(value: number) {
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   }
-  // const volPlus = () => {
-  //   if (volume !== 100) setVolume((prev) => (prev += 2));
-  // };
-  // const volMinus = () => {
-  //   if (volume !== 0) setVolume((prev) => (prev -= 2));
-  // };
+  const volPlus = () => {
+    if (volume !== 100) setVolume(volume + 2);
+  };
+  const volMinus = () => {
+    if (volume !== 0) setVolume(volume - 2);
+  };
   const track: ITrack = {
     id: '3',
     name: 'Track 3',
@@ -158,7 +167,7 @@ const Player = () => {
           </IconButton>
           <IconButton
             sx={{ p: 0 }}
-            aria-label={pause ? 'pause' : 'play'}
+            aria-label={pause ? 'play' : 'pause'}
             onClick={play}
           >
             {pause ? (
@@ -208,12 +217,12 @@ const Player = () => {
                   }}
                 >
                   <AddIcon
-                    // onClick={volPlus}
+                    onClick={volPlus}
                     sx={{ cursor: 'pointer', marginBottom: 1 }}
                   />
-                  <VolumeSlider value={volume} />
+                  <VolumeSlider value={volume} volumeChange={volumeChange} />
                   <RemoveIcon
-                    // onClick={volMinus}
+                    onClick={volMinus}
                     sx={{ cursor: 'pointer', marginTop: 1 }}
                   />
                 </Box>

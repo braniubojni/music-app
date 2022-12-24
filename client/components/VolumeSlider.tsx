@@ -4,9 +4,11 @@ import Slider from '@mui/material/Slider';
 
 interface IVolumeSlider {
   value: number;
+  volumeChange: Function;
 }
 
-const VolumeSlider: React.FC<IVolumeSlider> = ({ value }) => {
+const VolumeSlider: React.FC<IVolumeSlider> = ({ value, volumeChange }) => {
+  const [val, setVal] = React.useState(0);
   function preventHorizontalKeyboardNavigation(event: React.KeyboardEvent) {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();
@@ -21,9 +23,9 @@ const VolumeSlider: React.FC<IVolumeSlider> = ({ value }) => {
             WebkitAppearance: 'slider-vertical',
           },
         }}
-        orientation="vertical"
-        defaultValue={30}
         value={value}
+        onChange={(e, value) => volumeChange(value)}
+        orientation="vertical"
         aria-label="Temperature"
         valueLabelDisplay="auto"
         onKeyDown={preventHorizontalKeyboardNavigation}
