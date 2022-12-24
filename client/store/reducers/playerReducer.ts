@@ -15,10 +15,8 @@ const initialState: PlayerState = {
 export const playerReducer = (state = initialState, action: PlayerAction) => {
   switch (action.type) {
     case PlayerActionTypes.PAUSE:
-      console.log('Pause worked 1')
       return { ...state, pause: true };
     case PlayerActionTypes.PLAY:
-      console.log('Pause worked 2')
       return { ...state, pause: false };
     case PlayerActionTypes.SET_CURRENT_TIME:
       return { ...state, currentTime: action.payload };

@@ -8,7 +8,6 @@ interface IVolumeSlider {
 }
 
 const VolumeSlider: React.FC<IVolumeSlider> = ({ value, volumeChange }) => {
-  const [val, setVal] = React.useState(0);
   function preventHorizontalKeyboardNavigation(event: React.KeyboardEvent) {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();

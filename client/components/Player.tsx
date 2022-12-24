@@ -41,6 +41,7 @@ const Player = () => {
     if (!audio) {
       audio = new Audio();
       audio.src = track.audio;
+      audio.volume = volume;
     }
   }, []);
 
@@ -62,18 +63,30 @@ const Player = () => {
     }
   };
   const volumeChange = (value: number) => {
-    setVolume(value);
+    if (volume !== 1) {
+      audio.volume = Number(value) / 100;
+      setVolume(value);
+    }
   };
+  const changeCurrentTime = () => {
+    audio.currentTime = Number()
+  }
   function formatDuration(value: number) {
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   }
   const volPlus = () => {
-    if (volume !== 100) setVolume(volume + 2);
+    if (volume !== 100) {
+      audio.volume = Number(volume) / 100 + 0.02;
+      setVolume(volume + 2);
+    }
   };
   const volMinus = () => {
-    if (volume !== 0) setVolume(volume - 2);
+    if (volume !== 0) {
+      audio.volume = Number(volume) / 100 - 0.02;
+      setVolume(volume - 2);
+    }
   };
   const track: ITrack = {
     id: '3',
@@ -208,7 +221,7 @@ const Player = () => {
                 <Box
                   sx={{
                     position: 'absolute',
-                    left: '91vw',
+                    left: '95%',
                     bottom: '9vh',
                     display: 'flex',
                     flexDirection: 'column',
