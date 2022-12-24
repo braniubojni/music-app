@@ -5,9 +5,14 @@ import Slider from '@mui/material/Slider';
 interface IVolumeSlider {
   value: number;
   volumeChange: Function;
+  show: Function;
 }
 
-const VolumeSlider: React.FC<IVolumeSlider> = ({ value, volumeChange }) => {
+const VolumeSlider: React.FC<IVolumeSlider> = ({
+  value,
+  volumeChange,
+  show,
+}) => {
   function preventHorizontalKeyboardNavigation(event: React.KeyboardEvent) {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();
@@ -15,7 +20,7 @@ const VolumeSlider: React.FC<IVolumeSlider> = ({ value, volumeChange }) => {
   }
 
   return (
-    <Box sx={{ height: 300 }}>
+    <Box onBlur={() => show(false)} sx={{ height: 300 }}>
       <Slider
         sx={{
           '& input[type="range"]': {

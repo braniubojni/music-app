@@ -41,7 +41,7 @@ const Player = () => {
     if (!audio) {
       audio = new Audio();
       audio.src = track.audio;
-      audio.volume = volume;
+      audio.volume = volume / 100;
     }
   }, []);
 
@@ -233,7 +233,7 @@ const Player = () => {
                     onClick={volPlus}
                     sx={{ cursor: 'pointer', marginBottom: 1 }}
                   />
-                  <VolumeSlider value={volume} volumeChange={volumeChange} />
+                  <VolumeSlider value={volume} volumeChange={volumeChange} show={setShowVolume} />
                   <RemoveIcon
                     onClick={volMinus}
                     sx={{ cursor: 'pointer', marginTop: 1 }}
