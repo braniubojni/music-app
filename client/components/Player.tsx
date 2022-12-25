@@ -12,11 +12,10 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useActions } from '../hooks/useAction';
 
 import { useTypedSelecors } from '../hooks/useTypedSelector';
-import { ITrack } from '../types/track';
 import VolumeSlider from './VolumeSlider';
 
 const TinyText = styled(Typography)({
@@ -35,22 +34,6 @@ const Player = () => {
   const { pause, volume, active, currentTime, duration } = useTypedSelecors(
     (state) => state.player
   );
-
-  useEffect(() => {
-    if (!audio) {
-      audio = new Audio();
-      audio.src = track.audio;
-      audio.volume = volume / 100;
-      audio.onloadedmetadata = () => {
-        console.log(Math.ceil(audio.duration), 'duration')
-        setDuration(Math.ceil(audio.duration));
-      };
-      audio.ontimeupdate = () => {
-        setCurrentTime(Math.ceil(audio.currentTime));
-      };
-    }
-  }, [volume]);
-
   const {
     pauseTrack,
     playTrack,
@@ -59,6 +42,14 @@ const Player = () => {
     setDuration,
     setVolume,
   } = useActions();
+  useEffect(() => {
+    if (!audio) {
+      audio = new Audio();
+    } else {
+      setAudio();
+      play();
+    }
+  }, [active]);
   const play = () => {
     if (pause) {
       playTrack();
@@ -75,11 +66,10 @@ const Player = () => {
     }
   };
   const changeCurrentTime = (value: number) => {
-    audio.currentTime = value
+    audio.currentTime = value;
     setCurrentTime(value);
   };
   function formatDuration(value: number) {
-    console.log(value, currentTime, 'value');
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
@@ -96,36 +86,39 @@ const Player = () => {
       setVolume(volume - 2);
     }
   };
-  const track: ITrack = {
-    id: '3',
-    name: 'Track 3',
-    artist: 'Artist 3',
-    text: 'some text here',
-    listens: 3,
-    picture:
-      'http://localhost:7007/image/6eb131ab-c53d-4241-bee4-4dc056306ff2.jpg',
-    audio:
-      'http://localhost:7007/audio/db0097ee-e05f-4d3d-ae63-d78f43de7489.mp3',
-    comments: [],
+  const setAudio = () => {
+    if (active) {
+      audio.src = active.audio;
+      audio.volume = volume / 100;
+      audio.onloadedmetadata = () => {
+        setDuration(Math.ceil(audio.duration));
+      };
+      audio.ontimeupdate = () => {
+        setCurrentTime(Math.ceil(audio.currentTime));
+      };
+    }
   };
   const mainIconColor = theme.palette.mode === 'dark' ? '#fff' : '#000';
   const lightIconColor =
     theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  if (!active) {
+    return null;
+  }
   return (
     <Box sx={{ p: '0 10px', bottom: 0, width: '100%', position: 'fixed' }}>
       <Box sx={{ width: '100%', position: 'relative', paddingBottom: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={track.picture} />
+          <Avatar src={active?.picture} />
           <Box sx={{ ml: 1.5, minWidth: 0 }}>
             <Typography
               variant="caption"
               color="text.secondary"
               fontWeight={500}
             >
-              {track.artist}
+              {active?.artist}
             </Typography>
             <Typography noWrap letterSpacing={-0.25}>
-              {track.name}
+              {active?.name}
             </Typography>
           </Box>
         </Box>

@@ -1,13 +1,15 @@
 import { Delete, Pause, PlayArrow } from '@mui/icons-material';
 import {
-	Avatar,
-	IconButton,
-	ListItem,
-	ListItemAvatar, ListItemText
+  Avatar,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { TRACKS } from '../common/paths';
+import { useActions } from '../hooks/useAction';
 import { ITrack } from '../types/track';
 
 interface ITrackItemProps {
@@ -17,6 +19,12 @@ interface ITrackItemProps {
 
 const TrackItem: React.FC<ITrackItemProps> = ({ active = false, track }) => {
   const router = useRouter();
+  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+  const play = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    setActiveTrack(track);
+    playTrack();
+  };
   return (
     <ListItem
       sx={{
@@ -28,7 +36,7 @@ const TrackItem: React.FC<ITrackItemProps> = ({ active = false, track }) => {
       }}
       onClick={() => router.push(TRACKS + `/${track.id}`)}
     >
-      <IconButton onClick={(e) => e.stopPropagation()}>
+      <IconButton onClick={play}>
         {active ? <Pause /> : <PlayArrow />}
       </IconButton>
       <ListItemAvatar>

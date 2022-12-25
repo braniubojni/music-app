@@ -19,7 +19,7 @@ const Index = () => {
       listens: 1,
       picture:
         'http://localhost:7007/image/a5972120-c812-433c-9aff-09d339b4cca8.jpg',
-      audio: 'audio/dcffd57e-d2bd-4aea-acab-9938e0a10d84.mp3',
+      audio: 'http://localhost:7007/audio/dcffd57e-d2bd-4aea-acab-9938e0a10d84.mp3',
       comments: [],
     },
     {
@@ -30,7 +30,7 @@ const Index = () => {
       listens: 2,
       picture:
         'http://localhost:7007/image/ad09a65a-7764-4d96-884c-8a8ac575e67b.jpg',
-      audio: 'audio/2f5f04df-1278-47f2-9e9a-f439e1a88d05.mp3',
+      audio: 'http://localhost:7007/audio/2f5f04df-1278-47f2-9e9a-f439e1a88d05.mp3',
       comments: [],
     },
     {
@@ -41,7 +41,7 @@ const Index = () => {
       listens: 3,
       picture:
         'http://localhost:7007/image/6eb131ab-c53d-4241-bee4-4dc056306ff2.jpg',
-      audio: 'audio/db0097ee-e05f-4d3d-ae63-d78f43de7489.mp3',
+      audio: 'http://localhost:7007/audio/db0097ee-e05f-4d3d-ae63-d78f43de7489.mp3',
       comments: [],
     },
   ];

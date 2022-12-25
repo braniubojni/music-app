@@ -1,0 +1,6 @@
+.Container {
+  @media only screen and (max-height: 668px) {
+    height: fit-content;
+		margin-bottom: 100px;
+  }
+}
