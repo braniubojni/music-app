@@ -28,7 +28,7 @@ const VolumeSlider: React.FC<IVolumeSlider> = ({
           },
         }}
         value={value}
-        onChange={(e, value) => volumeChange(value)}
+        onChange={(_, value) => volumeChange(value)}
         orientation="vertical"
         aria-label="Temperature"
         valueLabelDisplay="auto"

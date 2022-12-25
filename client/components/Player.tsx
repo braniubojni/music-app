@@ -30,7 +30,6 @@ let audio: HTMLAudioElement;
 
 const Player = () => {
   const theme = useTheme();
-  const [position, setPosition] = useState(32);
   const [showVolume, setShowVolume] = useState(false);
   // const [volume, setVolume] = useState(30);
   const { pause, volume, active, currentTime, duration } = useTypedSelecors(
@@ -42,8 +41,15 @@ const Player = () => {
       audio = new Audio();
       audio.src = track.audio;
       audio.volume = volume / 100;
+      audio.onloadedmetadata = () => {
+        console.log(Math.ceil(audio.duration), 'duration')
+        setDuration(Math.ceil(audio.duration));
+      };
+      audio.ontimeupdate = () => {
+        setCurrentTime(Math.ceil(audio.currentTime));
+      };
     }
-  }, []);
+  }, [volume]);
 
   const {
     pauseTrack,
@@ -68,10 +74,12 @@ const Player = () => {
       setVolume(value);
     }
   };
-  const changeCurrentTime = () => {
-    audio.currentTime = Number()
-  }
+  const changeCurrentTime = (value: number) => {
+    audio.currentTime = value
+    setCurrentTime(value);
+  };
   function formatDuration(value: number) {
+    console.log(value, currentTime, 'value');
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
@@ -105,7 +113,7 @@ const Player = () => {
     theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
   return (
     <Box sx={{ p: '0 10px', bottom: 0, width: '100%', position: 'fixed' }}>
-      <Box sx={{ width: '100%', position: 'relative' }}>
+      <Box sx={{ width: '100%', position: 'relative', paddingBottom: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar src={track.picture} />
           <Box sx={{ ml: 1.5, minWidth: 0 }}>
@@ -124,11 +132,11 @@ const Player = () => {
         <Slider
           aria-label="time-indicator"
           size="small"
-          value={position}
+          value={currentTime}
           min={0}
           step={1}
           max={duration}
-          onChange={(_, value) => setPosition(value as number)}
+          onChange={(_, value) => changeCurrentTime(value as number)}
           sx={{
             color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)',
             height: 4,
@@ -164,8 +172,8 @@ const Player = () => {
             mt: -2,
           }}
         >
-          <TinyText>{formatDuration(position)}</TinyText>
-          <TinyText>-{formatDuration(duration - position)}</TinyText>
+          <TinyText>{formatDuration(currentTime)}</TinyText>
+          <TinyText>-{formatDuration(duration - currentTime)}</TinyText>
         </Box>
         <Box
           sx={{
@@ -233,7 +241,11 @@ const Player = () => {
                     onClick={volPlus}
                     sx={{ cursor: 'pointer', marginBottom: 1 }}
                   />
-                  <VolumeSlider value={volume} volumeChange={volumeChange} show={setShowVolume} />
+                  <VolumeSlider
+                    value={volume}
+                    volumeChange={volumeChange}
+                    show={setShowVolume}
+                  />
                   <RemoveIcon
                     onClick={volMinus}
                     sx={{ cursor: 'pointer', marginTop: 1 }}
