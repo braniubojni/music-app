@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -13,13 +14,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { SERVER_ERR } from 'src/common/constants';
+import { SERVER_ERR } from '../common/constants';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { IFiles, IGetAllQuery, IQuery } from './track.interface';
 import { TrackService } from './track.service';
 
-@Controller('track')
+@Controller('tracks')
 export class TrackController {
   constructor(private trackService: TrackService) {}
 
@@ -40,9 +41,9 @@ export class TrackController {
   }
 
   @Get()
-  getAll(@Query() { count, offset }: IGetAllQuery) {
+  getAll(@Query() query: IGetAllQuery) {
     try {
-      return this.trackService.getAll(+count, +offset);
+      return this.trackService.getAll(query ?? { offset: 0, count: 10 });
     } catch (e) {
       return new HttpException(SERVER_ERR, HttpStatus.INTERNAL_SERVER_ERROR);
     }

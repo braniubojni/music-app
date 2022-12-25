@@ -4,8 +4,8 @@ export interface IFiles {
 }
 
 export interface IGetAllQuery {
-  offset?: string;
-  count?: string;
+  offset: string | number;
+  count: string | number;
 }
 
 export interface IQuery {

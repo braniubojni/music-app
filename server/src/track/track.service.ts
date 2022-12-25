@@ -66,10 +66,11 @@ export class TrackService {
     return track;
   }
 
-  async getAll(take = 10, skip = 0): Promise<Track[]> {
+  async getAll({ offset, count }): Promise<Track[]> {
+    // const [skip, take] = [query]
     const tracks = await this.trackRepository.find({
-      skip,
-      take,
+      skip: offset,
+      take: count,
     });
     return tracks;
   }
