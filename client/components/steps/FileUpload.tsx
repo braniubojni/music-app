@@ -18,19 +18,9 @@ const FileUpload: React.FC<IFileUploadProps> = ({
   children,
 }) => {
   const ref = useRef<HTMLInputElement>();
-  const [err, setErr] = useState<null | string>(null);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const sizes: ISizes = {
-      image: 625_000,
-      audio: 20_000_000,
-    };
-    const file = e.target.files && e.target.files[0];
-    const type = file?.type.split('/')[0] as keyof ISizes;
-    // Size validation
-    if (sizes[type] && file?.size && file.size < sizes[type]) {
-      setFile(file);
-    } else {
-      setErr(`${type} size shouldn't be bigger than ${sizes[type]}`);
+    if (e.target.files) {
+      setFile(e.target.files[0]);
     }
   };
   return (
@@ -45,7 +35,6 @@ const FileUpload: React.FC<IFileUploadProps> = ({
         onChange={onChange}
       />
       {children}
-      {err && <ErrorDiv msg={err} />}
     </Grid>
   );
 };

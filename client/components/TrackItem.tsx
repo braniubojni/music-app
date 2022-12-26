@@ -4,10 +4,11 @@ import {
   IconButton,
   ListItem,
   ListItemAvatar,
-  ListItemText,
+  ListItemText
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { backStatic } from '../common/env.constants';
 import { TRACKS } from '../common/paths';
 import { useActions } from '../hooks/useAction';
 import { ITrack } from '../types/track';
@@ -19,7 +20,7 @@ interface ITrackItemProps {
 
 const TrackItem: React.FC<ITrackItemProps> = ({ active = false, track }) => {
   const router = useRouter();
-  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+  const { playTrack, setActiveTrack } = useActions();
   const play = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setActiveTrack(track);
@@ -34,13 +35,15 @@ const TrackItem: React.FC<ITrackItemProps> = ({ active = false, track }) => {
         m: 1.5,
         cursor: 'pointer',
       }}
-      onClick={() => router.push(TRACKS + `/${track.id}`)}
+      onClick={(e) => (
+        e.stopPropagation(), router.push(TRACKS + `/${track.id}`)
+      )}
     >
       <IconButton onClick={play}>
         {active ? <Pause /> : <PlayArrow />}
       </IconButton>
       <ListItemAvatar>
-        <Avatar src={track.picture}></Avatar>
+        <Avatar src={`${backStatic}${track.picture}`}></Avatar>
       </ListItemAvatar>
       <ListItemText primary={track.name} secondary={track.artist} />
       {active && <div>02:42 / 03:32</div>}

@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { backStatic } from '../common/env.constants';
 import { useActions } from '../hooks/useAction';
 
 import { useTypedSelecors } from '../hooks/useTypedSelector';
@@ -37,7 +38,6 @@ const Player = () => {
   const {
     pauseTrack,
     playTrack,
-    setActiveTrack,
     setCurrentTime,
     setDuration,
     setVolume,
@@ -88,7 +88,7 @@ const Player = () => {
   };
   const setAudio = () => {
     if (active) {
-      audio.src = active.audio;
+      audio.src = backStatic + active.audio;
       audio.volume = volume / 100;
       audio.onloadedmetadata = () => {
         setDuration(Math.ceil(audio.duration));
@@ -108,7 +108,7 @@ const Player = () => {
     <Box sx={{ p: '0 10px', bottom: 0, width: '100%', position: 'fixed' }}>
       <Box sx={{ width: '100%', position: 'relative', paddingBottom: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={active?.picture} />
+          <Avatar src={backStatic+active?.picture} />
           <Box sx={{ ml: 1.5, minWidth: 0 }}>
             <Typography
               variant="caption"
