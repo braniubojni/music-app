@@ -37,7 +37,10 @@ const TrackPage = ({ pageProps: { serverTrack } }) => {
   };
 
   return (
-    <MainLayout>
+    <MainLayout
+      keywords={`Music, artists, ${track.name},${track.artist}`}
+      title={'Music Platform - ' + track.name + '/' + track.artist}
+    >
       <Button
         sx={{ fontSize: 18 }}
         variant="outlined"

@@ -6,7 +6,7 @@ import MainLayout from '../layouts/MainLayout';
 const Index = () => {
   return (
     <>
-      <MainLayout>
+      <MainLayout title='List of tracks - Music Platform'>
         <Box
           sx={{
             display: 'flex',
