@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FileService, FileType } from 'src/file/file.service';
+import { FileService, FileType } from '../file/file.service';
 import { Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -67,7 +67,6 @@ export class TrackService {
   }
 
   async getAll({ offset, count }): Promise<Track[]> {
-    // const [skip, take] = [query]
     const tracks = await this.trackRepository.find({
       skip: offset,
       take: count,
@@ -75,7 +74,7 @@ export class TrackService {
     return tracks;
   }
 
-  async search(trackName: string): Promise<Track[]> {
+  async search(trackName: string): Promise<Omit<Track, 'comments'>[]> {
     const tracks = await this.trackRepository
       .createQueryBuilder('track')
       .where('track.name ILIKE :name', { name: `%${trackName}%` })

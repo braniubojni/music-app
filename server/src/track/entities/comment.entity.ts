@@ -12,5 +12,5 @@ export class Comment {
   text: string;
 
   @ManyToOne(() => Track, (track) => track.comments)
-  track: Track;
+  track?: Track;
 }
