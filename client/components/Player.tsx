@@ -10,12 +10,13 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
-import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import { useState } from 'react';
 import { backStatic } from '../common/env.constants';
 import { useActions } from '../hooks/useAction';
 
+import useDidUpdate from '../hooks/useDidUpdate';
 import { useTypedSelecors } from '../hooks/useTypedSelector';
 import VolumeSlider from './VolumeSlider';
 
@@ -42,7 +43,7 @@ const Player = () => {
     setDuration,
     setVolume,
   } = useActions();
-  useEffect(() => {
+  useDidUpdate(() => {
     if (!audio) {
       audio = new Audio();
     } else {
@@ -108,7 +109,7 @@ const Player = () => {
     <Box sx={{ p: '0 10px', bottom: 0, width: '100%', position: 'fixed' }}>
       <Box sx={{ width: '100%', position: 'relative', paddingBottom: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={backStatic+active?.picture} />
+          <Avatar src={backStatic + active?.picture} />
           <Box sx={{ ml: 1.5, minWidth: 0 }}>
             <Typography
               variant="caption"
@@ -141,11 +142,10 @@ const Player = () => {
                 boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
               },
               '&:hover, &.Mui-focusVisible': {
-                boxShadow: `0px 0px 0px 8px ${
-                  theme.palette.mode === 'dark'
-                    ? 'rgb(255 255 255 / 16%)'
-                    : 'rgb(0 0 0 / 16%)'
-                }`,
+                boxShadow: `0px 0px 0px 8px ${theme.palette.mode === 'dark'
+                  ? 'rgb(255 255 255 / 16%)'
+                  : 'rgb(0 0 0 / 16%)'
+                  }`,
               },
               '&.Mui-active': {
                 width: 20,

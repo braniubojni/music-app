@@ -86,7 +86,7 @@ export default function PersistentDrawerLeft() {
       href: TRACKS,
     },
     {
-      name: 'Albom list',
+      name: 'Album list',
       href: ALBUMS,
     },
   ];
